@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="@dz_xs7 — Plataforma de demonstração com produtos fictícios. Ambiente de teste." />
+<title>@dz_xs7 — Plataforma de Demonstração</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   @dz_xs7 — Estilos Globais
+   ============================================================ */
+:root{
+  --bg:#05070d; --bg-2:#0a0e1a; --card:#0f1420; --card-hover:#141a2a;
+  --border:#1e2637; --text:#e6ecf5; --text-dim:#8b95a8;
+  --primary:#4f7cff; --primary-glow:#6d94ff; --accent:#00e0b8;
+  --danger:#ff4d6d; --warn:#ffb547;
+  --radius:16px; --radius-sm:10px;
+  --shadow:0 10px 40px rgba(0,0,0,.5);
+  --font:'Inter',system-ui,sans-serif;
+  --font-display:'Space Grotesk',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);background:var(--bg);color:var(--text);
+  line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  min-height:100vh;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer}
+input,textarea,select{font-family:inherit}
+
+/* BANNER TESTE */
+.test-banner{
+  background:linear-gradient(90deg,#2a1a05,#3d2605);
+  color:#ffd88a;text-align:center;padding:10px 16px;
+  font-size:12.5px;border-bottom:1px solid #4a3410;position:relative;z-index:60;
+}
+.test-banner strong{color:#ffb547}
+
+/* NAVBAR */
+.navbar{
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:blur(14px);
+  background:rgba(5,7,13,.78);
+  border-bottom:1px solid var(--border);
+}
+.nav-container{
+  max-width:1200px;margin:0 auto;padding:14px 22px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;cursor:pointer}
+.logo-mark{
+  width:38px;height:38px;border-radius:10px;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  display:grid;place-items:center;font-family:var(--font-display);
+  font-weight:700;font-size:15px;color:#fff;
+  box-shadow:0 0 20px rgba(79,124,255,.5);
+}
+.logo-text{font-family:var(--font-display);font-size:18px;letter-spacing:-.3px}
+.nav-links{display:flex;align-items:center;gap:22px}
+.nav-links a{color:var(--text-dim);font-size:14px;font-weight:500;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--text)}
+
+/* BOTÕES */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 22px;border-radius:var(--radius-sm);
+  font-weight:600;font-size:14px;border:none;
+  transition:transform .2s,box-shadow .2s,background .2s;
+  cursor:pointer;text-align:center;white-space:nowrap;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--primary),var(--primary-glow));
+  color:#fff;box-shadow:0 6px 24px rgba(79,124,255,.35);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(79,124,255,.5)}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn-ghost:hover{background:var(--card);border-color:#2a3450}
+.btn-accent{background:linear-gradient(135deg,var(--accent),#00b894);color:#04140f}
+.btn-accent:hover{transform:translateY(-2px)}
+.btn-danger{background:transparent;border:1px solid rgba(255,77,109,.4);color:var(--danger)}
+.btn-danger:hover{background:rgba(255,77,109,.1)}
+.btn-sm{padding:9px 16px;font-size:13px}
+.btn-block{width:100%}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+
+/* MENU MOBILE */
+.menu-toggle{
+  display:none;background:none;border:none;
+  flex-direction:column;gap:5px;padding:6px;
+}
+.menu-toggle span{
+  display:block;width:24px;height:2px;background:var(--text);
+  border-radius:2px;transition:.3s;
+}
+.menu-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.menu-toggle.open span:nth-child(2){opacity:0}
+.menu-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* LAYOUT GERAL */
+.container{max-width:1200px;margin:0 auto;padding:0 22px}
+.section{padding:80px 0}
+.section-head{text-align:center;margin-bottom:52px}
+.kicker{
+  color:var(--primary-glow);font-size:12.5px;font-weight:600;
+  text-transform:uppercase;letter-spacing:2px;
+}
+.section-head h2{
+  font-family:var(--font-display);font-size:clamp(26px,4vw,40px);
+  margin:10px 0 12px;letter-spacing:-.8px;
+}
+.section-head p{color:var(--text-dim);max-width:560px;margin:0 auto}
+
+/* HERO */
+.hero{position:relative;padding:90px 0 70px;text-align:center;overflow:hidden}
+.hero-glow{
+  position:absolute;top:-200px;left:50%;transform:translateX(-50%);
+  width:800px;height:800px;
+  background:radial-gradient(circle,rgba(79,124,255,.25),transparent 60%);
+  filter:blur(60px);pointer-events:none;
+}
+.hero-content{position:relative;max-width:900px;margin:0 auto;padding:0 22px}
+.badge{
+  display:inline-block;background:rgba(79,124,255,.1);
+  border:1px solid rgba(79,124,255,.3);color:var(--primary-glow);
+  padding:7px 16px;border-radius:100px;font-size:12.5px;font-weight:500;
+  margin-bottom:22px;
+}
+.hero-title{
+  font-family:var(--font-display);font-size:clamp(34px,6vw,60px);
+  line-height:1.1;font-weight:700;letter-spacing:-1.5px;margin-bottom:18px;
+}
+.gradient-text{
+  background:linear-gradient(135deg,var(--primary) 0%,var(--accent) 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.hero-sub{font-size:16.5px;color:var(--text-dim);max-width:620px;margin:0 auto 30px}
+.hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.hero-stats{display:flex;gap:60px;justify-content:center;margin-top:56px;flex-wrap:wrap}
+.hero-stats div{text-align:center}
+.hero-stats strong{font-family:var(--font-display);font-size:28px;display:block}
+.hero-stats span{font-size:12.5px;color:var(--text-dim)}
+
+/* CATÁLOGO */
+.catalog-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:20px;
+}
+.product-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:24px;position:relative;
+  transition:all .3s ease;overflow:hidden;
+}
+.product-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at top right,rgba(79,124,255,.15),transparent 60%);
+  opacity:0;transition:opacity .3s;pointer-events:none;
+}
+.product-card:hover{
+  transform:translateY(-6px);border-color:rgba(79,124,255,.4);
+  box-shadow:0 20px 50px rgba(0,0,0,.5);
+}
+.product-card:hover::before{opacity:1}
+.product-card > *{position:relative;z-index:1}
+.tag-demo{
+  position:absolute;top:14px;right:14px;
+  background:rgba(255,181,71,.12);color:var(--warn);
+  font-size:10px;font-weight:600;padding:4px 9px;border-radius:100px;
+  border:1px solid rgba(255,181,71,.3);letter-spacing:.5px;
+}
+.product-name{font-family:var(--font-display);font-size:20px;margin-bottom:8px;font-weight:700}
+.product-desc{color:var(--text-dim);font-size:13px;margin-bottom:16px;min-height:40px}
+.product-status{font-size:12px;color:var(--text-dim);margin-bottom:14px}
+.product-limits{
+  display:flex;justify-content:space-between;
+  padding:14px 0;border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);margin-bottom:16px;
+}
+.product-limits div{text-align:center;flex:1}
+.product-limits small{
+  display:block;color:var(--text-dim);font-size:11px;
+  text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;
+}
+.product-limits strong{font-family:var(--font-display);font-size:16px}
+.product-limits .price{color:var(--accent)}
+.product-actions{display:flex;gap:8px}
+.product-actions .btn{flex:1;padding:11px;font-size:13px}
+
+.status-dot{
+  display:inline-block;width:8px;height:8px;border-radius:50%;
+  margin-right:6px;vertical-align:middle;
+}
+.status-on{background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.status-off{background:var(--danger)}
+
+/* STEPS */
+.steps{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;
+}
+.step{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:26px;transition:all .3s;
+}
+.step:hover{border-color:rgba(79,124,255,.35);transform:translateY(-4px)}
+.step-num{
+  font-family:var(--font-display);font-size:26px;font-weight:700;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;margin-bottom:10px;
+}
+.step h3{font-size:16.5px;margin-bottom:6px}
+.step p{color:var(--text-dim);font-size:14px}
+
+/* SUPPORT CARDS */
+.support-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;
+}
+.support-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:28px;transition:all .3s;cursor:pointer;
+}
+.support-card:hover{
+  border-color:rgba(0,224,184,.3);transform:translateY(-4px);
+  box-shadow:0 16px 40px rgba(0,0,0,.4);
+}
+.support-card .icon{font-size:28px;margin-bottom:12px}
+.support-card h3{font-size:16.5px;margin-bottom:6px}
+.support-card p{color:var(--text-dim);font-size:14px}
+
+/* FOOTER */
+.footer{
+  background:var(--bg-2);border-top:1px solid var(--border);
+  padding:56px 0 22px;margin-top:50px;
+}
+.footer-grid{
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;
+}
+.footer-desc{color:var(--text-dim);font-size:13.5px;margin-top:14px;max-width:320px}
+.footer h4{font-size:13.5px;margin-bottom:14px}
+.footer a{display:block;color:var(--text-dim);font-size:13.5px;margin-bottom:9px;transition:color .2s}
+.footer a:hover{color:var(--primary-glow)}
+.footer-bottom{
+  max-width:1200px;margin:36px auto 0;padding-top:22px;
+  border-top:1px solid var(--border);display:flex;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;font-size:12.5px;color:var(--text-dim);
+  padding-left:22px;padding-right:22px;
+}
+.footer-bottom .warn{color:var(--warn)}
+
+/* AUTENTICAÇÃO / FORM */
+.auth-wrap{
+  min-height:calc(100vh - 90px);
+  display:flex;align-items:center;justify-content:center;padding:40px 22px;
+}
+.auth-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:36px;
+  width:100%;max-width:420px;box-shadow:var(--shadow);
+}
+.auth-card h2{
+  font-family:var(--font-display);font-size:24px;margin-bottom:6px;
+}
+.auth-card .sub{color:var(--text-dim);font-size:14px;margin-bottom:22px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;color:var(--text-dim);margin-bottom:6px}
+.field input{
+  width:100%;padding:12px 14px;background:var(--bg-2);
+  border:1px solid var(--border);border-radius:10px;
+  color:var(--text);font-size:14px;outline:none;transition:border .2s;
+}
+.field input:focus{border-color:var(--primary)}
+.divider{
+  display:flex;align-items:center;gap:12px;
+  color:var(--text-dim);font-size:12px;margin:18px 0;
+}
+.divider::before,.divider::after{
+  content:'';flex:1;height:1px;background:var(--border);
+}
+.btn-google{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:12px;background:#fff;color:#222;border:none;border-radius:10px;
+  font-weight:600;font-size:14px;cursor:pointer;transition:opacity .2s;
+}
+.btn-google:hover{opacity:.9}
+.tabs{display:flex;gap:6px;background:var(--bg-2);padding:5px;border-radius:12px;margin-bottom:22px}
+.tabs button{
+  flex:1;padding:9px;background:transparent;border:none;border-radius:8px;
+  color:var(--text-dim);font-weight:600;font-size:13px;transition:.2s;
+}
+.tabs button.active{background:var(--card);color:var(--text)}
+.msg{
+  padding:11px 14px;border-radius:10px;font-size:13px;margin-bottom:14px;display:none;
+}
+.msg.error{background:rgba(255,77,109,.1);border:1px solid rgba(255,77,109,.35);color:#ff8598;display:block}
+.msg.ok{background:rgba(0,224,184,.1);border:1px solid rgba(0,224,184,.35);color:var(--accent);display:block}
+.msg.info{background:rgba(79,124,255,.1);border:1px solid rgba(79,124,255,.35);color:var(--primary-glow);display:block}
+
+/* CHECKOUT */
+.checkout-wrap{max-width:960px;margin:0 auto;padding:36px 22px}
+.checkout-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:22px;margin-top:26px}
+.box{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:24px;
+}
+.box h3{font-family:var(--font-display);margin-bottom:16px;font-size:17px}
+.order-line{
+  display:flex;justify-content:space-between;padding:10px 0;
+  border-bottom:1px solid var(--border);font-size:14px;gap:12px;
+}
+.order-line:last-child{border-bottom:none}
+.order-line span{color:var(--text-dim)}
+.order-line strong{color:var(--text);text-align:right;word-break:break-word}
+.total-line{font-size:20px;font-weight:700;color:var(--accent)}
+.pix-logo{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.pix-logo svg{width:34px;height:34px;flex-shrink:0}
+.pix-logo strong{font-family:var(--font-display);font-size:16px}
+.qr-wrap{display:flex;justify-content:center;margin:8px 0}
+.qrcode-box{
+  background:#fff;padding:14px;border-radius:12px;
+  box-shadow:0 6px 24px rgba(0,0,0,.4);
+}
+.qrcode-box canvas{display:block;width:220px;height:220px}
+.pix-code{
+  background:var(--bg-2);border:1px dashed var(--border);
+  border-radius:10px;padding:12px;font-family:'Space Grotesk',monospace;
+  font-size:11.5px;word-break:break-all;color:var(--text-dim);
+  max-height:80px;overflow:auto;margin:12px 0;
+}
+.payment-status{
+  display:flex;align-items:center;gap:10px;padding:11px 14px;
+  border-radius:10px;background:rgba(255,181,71,.08);
+  border:1px solid rgba(255,181,71,.3);color:var(--warn);
+  font-size:13.5px;font-weight:500;margin-top:14px;
+}
+.payment-status.confirmed{
+  background:rgba(0,224,184,.08);border-color:rgba(0,224,184,.3);color:var(--accent);
+}
+.pulse-dot{
+  width:10px;height:10px;border-radius:50%;background:var(--warn);
+  animation:pulse 1.5s infinite;flex-shrink:0;
+}
+.payment-status.confirmed .pulse-dot{background:var(--accent);animation:none}
+@keyframes pulse{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.4;transform:scale(.7)}
+}
+.step-hint{font-size:13px;color:var(--text-dim);margin-top:12px}
+
+/* DASHBOARD */
+.dash-wrap{max-width:1200px;margin:0 auto;padding:32px 22px}
+.dash-head{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:26px;flex-wrap:wrap;gap:14px;
+}
+.dash-head h1{font-family:var(--font-display);font-size:26px}
+.dash-head p{color:var(--text-dim);font-size:14px}
+.dash-tabs{
+  display:flex;gap:6px;background:var(--card);border:1px solid var(--border);
+  padding:5px;border-radius:12px;overflow-x:auto;margin-bottom:24px;
+}
+.dash-tabs button{
+  padding:10px 16px;background:transparent;border:none;border-radius:8px;
+  color:var(--text-dim);font-weight:600;font-size:13.5px;
+  transition:.2s;white-space:nowrap;
+}
+.dash-tabs button.active{background:var(--bg-2);color:var(--text)}
+.stat-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:16px;margin-bottom:24px;
+}
+.stat{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px;
+}
+.stat small{color:var(--text-dim);font-size:12px;text-transform:uppercase;letter-spacing:.6px}
+.stat strong{
+  display:block;font-family:var(--font-display);font-size:26px;margin-top:6px;
+}
+.stat .delta{font-size:12px;margin-top:4px}
+.delta-up{color:var(--accent)} .delta-down{color:var(--danger)}
+
+.data-table{
+  width:100%;background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;border-collapse:collapse;
+}
+.data-table th{
+  background:var(--bg-2);text-align:left;padding:12px 16px;
+  font-size:12px;color:var(--text-dim);text-transform:uppercase;
+  letter-spacing:.6px;font-weight:600;
+}
+.data-table td{
+  padding:13px 16px;border-top:1px solid var(--border);font-size:13.5px;
+}
+.data-table tr:hover td{background:var(--card-hover)}
+.badge-status{
+  display:inline-block;padding:4px 10px;border-radius:100px;
+  font-size:11px;font-weight:600;letter-spacing:.3px;
+}
+.bs-wait{background:rgba(255,181,71,.12);color:var(--warn)}
+.bs-ok{background:rgba(0,224,184,.12);color:var(--accent)}
+.bs-proc{background:rgba(79,124,255,.12);color:var(--primary-glow)}
+.bs-cancel{background:rgba(255,77,109,.12);color:var(--danger)}
+.bs-ref{background:rgba(255,181,71,.12);color:var(--warn)}
+
+/* PRODUTO DETALHE */
+.prod-detail{
+  display:grid;grid-template-columns:1.3fr 1fr;gap:28px;
+  max-width:1100px;margin:0 auto;padding:36px 22px;
+}
+.prod-hero{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:32px;position:relative;overflow:hidden;
+}
+.prod-hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at top right,rgba(79,124,255,.18),transparent 60%);
+  pointer-events:none;
+}
+.prod-hero h1{font-family:var(--font-display);font-size:32px;margin-bottom:10px}
+.prod-hero .sub{color:var(--text-dim);margin-bottom:20px}
+.prod-hero ul{list-style:none;margin:20px 0}
+.prod-hero li{
+  padding:10px 0;border-bottom:1px solid var(--border);
+  font-size:14px;display:flex;gap:10px;align-items:center;
+}
+.prod-hero li::before{content:'✓';color:var(--accent);font-weight:700}
+
+/* TOASTS */
+.toast{
+  position:fixed;bottom:24px;right:24px;background:var(--card);
+  border:1px solid var(--border);border-radius:12px;padding:14px 18px;
+  font-size:14px;box-shadow:var(--shadow);z-index:200;
+  transform:translateY(150%);transition:transform .3s ease;
+  max-width:calc(100vw - 48px);
+}
+.toast.show{transform:translateY(0)}
+.toast.ok{border-color:rgba(0,224,184,.4)}
+.toast.err{border-color:rgba(255,77,109,.4)}
+
+/* UTILS */
+.hidden{display:none!important}
+.text-dim{color:var(--text-dim)}
+.mt-1{margin-top:8px}.mt-2{margin-top:16px}.mt-3{margin-top:24px}
+.mb-1{margin-bottom:8px}.mb-2{margin-bottom:16px}.mb-3{margin-bottom:24px}
+.center{text-align:center}
+.warn-box{
+  background:rgba(255,181,71,.08);border:1px solid rgba(255,181,71,.3);
+  color:#ffd88a;padding:12px 16px;border-radius:10px;font-size:13px;margin-bottom:20px;
+}
+
+/* RESPONSIVO */
+@media (max-width:900px){
+  .checkout-grid,.prod-detail{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:768px){
+  .menu-toggle{display:flex}
+  .nav-links{
+    position:fixed;top:0;right:0;bottom:0;
+    width:78%;max-width:320px;background:var(--bg-2);
+    flex-direction:column;align-items:flex-start;
+    padding:90px 30px 30px;transform:translateX(100%);
+    transition:transform .3s ease;border-left:1px solid var(--border);
+    z-index:40;gap:4px;
+  }
+  .nav-links.open{transform:translateX(0)}
+  .nav-links a{font-size:16px;padding:10px 0;width:100%}
+  .nav-links .btn{margin-top:10px;width:100%}
+  .hero{padding:60px 0 50px}
+  .hero-stats{gap:26px;margin-top:40px}
+  .hero-stats strong{font-size:22px}
+  .section{padding:60px 0}
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .footer-bottom{flex-direction:column}
+}
+@media (max-width:480px){
+  .footer-grid{grid-template-columns:1fr}
+  .product-actions{flex-direction:column}
+  .qrcode-box canvas{width:180px;height:180px}
+  .stat-grid{grid-template-columns:1fr}
+  .auth-card{padding:24px 20px}
+  .dash-head{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<!-- ========== BANNER TESTE ========== -->
+<div class="test-banner">
+  ⚠️ <strong>Ambiente de demonstração.</strong> Produtos e valores são <strong>fictícios</strong> — não representam crédito real, cartão, empréstimo ou oferta financeira.
+</div>
+
+<!-- ========== NAVBAR ========== -->
+<header class="navbar">
+  <div class="nav-container">
+    <div class="logo" onclick="go('home')">
+      <span class="logo-mark">DZ</span>
+      <span class="logo-text">@dz_xs7</span>
+    </div>
+    <nav class="nav-links" id="navLinks">
+      <a href="#" onclick="go('home');scrollTo_('catalogo');return false">Catálogo</a>
+      <a href="#" onclick="go('home');scrollTo_('como-funciona');return false">Como funciona</a>
+      <a href="#" onclick="go('home');scrollTo_('suporte');return false">Suporte</a>
+      <a href="#" id="navLogin" onclick="go('login');return false" class="nav-login">Entrar</a>
+      <a href="#" id="navArea" class="hidden" onclick="go('dashboard');return false">Minha área</a>
+      <a href="#" id="navAdmin" class="hidden" onclick="go('admin');return false">Admin</a>
+      <a href="#" id="navLogout" class="hidden" onclick="logout();return false">Sair</a>
+      <a href="#" class="btn btn-primary btn-sm" id="navCta" onclick="go('login');return false">Criar conta</a>
+    </nav>
+    <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ========== CONTEÚDO (SPA) ========== -->
+<main id="app"></main>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <div class="logo" onclick="go('home')">
+        <span class="logo-mark">DZ</span>
+        <span class="logo-text">@dz_xs7</span>
+      </div>
+      <p class="footer-desc">
+        Plataforma de demonstração. Todos os produtos, limites e preços exibidos são
+        <strong>fictícios</strong> e destinados apenas a testes de interface.
+      </p>
+    </div>
+    <div>
+      <h4>Plataforma</h4>
+      <a href="#" onclick="go('home');scrollTo_('catalogo');return false">Catálogo</a>
+      <a href="#" onclick="go('home');scrollTo_('como-funciona');return false">Como funciona</a>
+      <a href="#" onclick="go('login');return false">Entrar</a>
+    </div>
+    <div>
+      <h4>Suporte</h4>
+      <a href="#" onclick="go('home');scrollTo_('suporte');return false">Central de ajuda</a>
+      <a href="#" onclick="go('home');scrollTo_('faq');return false">FAQ</a>
+      <a href="#" onclick="go('dashboard');return false">Meus tickets</a>
+    </div>
+    <div>
+      <h4>Legal</h4>
+      <a href="#" onclick="alert('Documento de demonstração.');return false">Termos de uso</a>
+      <a href="#" onclick="alert('Documento de demonstração.');return false">Política de privacidade</a>
+      <a href="#" onclick="alert('Documento de demonstração.');return false">Política de reembolso</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© <span id="year"></span> @dz_xs7 — Todos os direitos reservados.</p>
+    <p class="warn">⚠️ Ambiente de teste. Produtos fictícios. Sem movimentação financeira real.</p>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   @dz_xs7 — App de demonstração
+   Toda a lógica roda no navegador. Em produção, migrar para backend.
+   ============================================================ */
+
+// ---------- DADOS FICTÍCIOS ----------
+const PRODUTOS = [
+  {id:'P05', nome:'Produto 5K',  limite:5000,  preco:200,  disponivel:true},
+  {id:'P06', nome:'Produto 6K',  limite:6000,  preco:300,  disponivel:true},
+  {id:'P08', nome:'Produto 8K',  limite:8000,  preco:400,  disponivel:true},
+  {id:'P10', nome:'Produto 10K', limite:10000, preco:500,  disponivel:true},
+  {id:'P12', nome:'Produto 12K', limite:12000, preco:600,  disponivel:true},
+  {id:'P14', nome:'Produto 14K', limite:14000, preco:700,  disponivel:true},
+  {id:'P16', nome:'Produto 16K', limite:16000, preco:800,  disponivel:true},
+  {id:'P18', nome:'Produto 18K', limite:18000, preco:900,  disponivel:true},
+  {id:'P20', nome:'Produto 20K', limite:20000, preco:1000, disponivel:true},
+  {id:'P22', nome:'Produto 22K', limite:22000, preco:1100, disponivel:true},
+  {id:'P24', nome:'Produto 24K', limite:24000, preco:1200, disponivel:true}
+];
+
+// ---------- UTILS ----------
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => document.querySelectorAll(sel);
+const fmtBRL = (v) => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const uid = (p='ID') => p + '-' + Math.random().toString(36).slice(2,8).toUpperCase() + '-' + Date.now().toString(36).slice(-4).toUpperCase();
+
+function toast(msg, type='ok'){
+  const el = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.textContent = msg;
+  document.body.appendChild(el);
+  requestAnimationFrame(() => el.classList.add('show'));
+  setTimeout(() => {
+    el.classList.remove('show');
+    setTimeout(() => el.remove(), 400);
+  }, 3200);
+}
+
+function scrollTo_(id){
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  }, 60);
+}
+
+// ---------- ESTADO LOCAL (demo) ----------
+const store = {
+  get(k, def){ try { return JSON.parse(localStorage.getItem('dzx_' + k)) ?? def; } catch { return def; } },
+  set(k, v){ localStorage.setItem('dzx_' + k, JSON.stringify(v)); },
+  del(k){ localStorage.removeItem('dzx_' + k); }
+};
+
+// ---------- AUTENTICAÇÃO (DEMO — em produção: backend + OAuth + hash) ----------
+const Auth = {
+  user(){ return store.get('user', null); },
+  isLogged(){ return !!this.user(); },
+  isAdmin(){ const u = this.user(); return u && u.role === 'admin'; },
+
+  // ⚠️ Em produção: enviar para o backend (NUNCA armazenar senha no client)
+  register({nome, email, senha}){
+    if (!email || !senha || senha.length < 6) throw new Error('Preencha os dados corretamente (senha ≥ 6 caracteres).');
+    const users = store.get('users', []);
+    if (users.find(u => u.email === email)) throw new Error('E-mail já cadastrado neste ambiente de teste.');
+    const user = { id: uid('USR'), nome, email, role: 'cliente', criadoEm: new Date().toISOString() };
+    users.push(user); store.set('users', users);
+    store.set('user', user);
+    return user;
+  },
+
+  login({email, senha}){
+    if (!email || !senha) throw new Error('Informe e-mail e senha.');
+    // Admin demo
+    if (email === 'admin@dzxs7.test' && senha === 'admin123') {
+      const admin = { id: uid('ADM'), nome:'Administrador Demo', email, role:'admin', criadoEm:new Date().toISOString() };
+      store.set('user', admin); return admin;
+    }
+    const users = store.get('users', []);
+    const u = users.find(x => x.email === email);
+    if (!u) throw new Error('Conta não encontrada. Cadastre-se primeiro.');
+    // ⚠️ Demo: aceita qualquer senha ≥ 6 para simular
+    store.set('user', u); return u;
+  },
+
+  // Simulação de "Continuar com Google" (em produção: Google Identity Services real)
+  loginGoogle(){
+    const user = {
+      id: uid('GGL'),
+      nome: 'Usuário Google (demo)',
+      email: 'usuario.demo@gmail.com',
+      role: 'cliente',
+      criadoEm: new Date().toISOString(),
+      provider: 'google'
+    };
+    store.set('user', user);
+    return user;
+  },
+
+  logout(){ store.del('user'); }
+};
+
+// ---------- PEDIDOS ----------
+const Pedidos = {
+  all(){ return store.get('pedidos', []); },
+  byUser(userId){ return this.all().filter(p => p.userId === userId); },
+  byId(id){ return this.all().find(p => p.id === id); },
+  create({ userId, produto, dadosCliente }){
+    const pedidos = this.all();
+    const pedido = {
+      id: uid('PED'),
+      userId,
+      produtoId: produto.id,
+      produtoNome: produto.nome,
+      limite: produto.limite,
+      valor: produto.preco,
+      data: new Date().toISOString(),
+      statusPagamento: 'Aguardando pagamento',
+      statusPedido: 'Aguardando pagamento',
+      cliente: dadosCliente || {},
+      pix: { qrCodeGerado: true, copiaECola: this.gerarPixDemo(produto, usuarioAtual?.email) },
+      historico: [
+        { data: new Date().toISOString(), status: 'Pedido criado', obs: 'Aguardando pagamento via PIX (demo).' }
+      ]
+    };
+    pedidos.push(pedido); store.set('pedidos', pedidos);
+    return pedido;
+  },
+  update(id, changes, nota){
+    const pedidos = this.all();
+    const idx = pedidos.findIndex(p => p.id === id);
+    if (idx < 0) return null;
+    pedidos[idx] = {...pedidos[idx], ...changes};
+    if (nota) {
+      pedidos[idx].historico.push({ data:new Date().toISOString(), status:nota.status||'Atualização', obs:nota.obs||'' });
+    }
+    store.set('pedidos', pedidos);
+    return pedidos[idx];
+  },
+  gerarPixDemo(produto, email){
+    // ⚠️ Em produção: gerar via backend + gateway PIX (Mercado Pago, Efí, Gerencianet, etc.)
+    // Este é um "copia-e-cola" puramente demonstrativo
+    const valor = produto.preco.toFixed(2);
+    return `00020126DEMO${produto.id}520400005303986540${valor}5802BR5909DZ_XS7_DEMO6009SAO_PAULO62070503***6304DEMO`;
+  }
+};
+
+// ---------- REEMBOLSOS ----------
+const Reembolsos = {
+  all(){ return store.get('reembolsos', []); },
+  byUser(userId){ return this.all().filter(r => r.userId === userId); },
+  create({ pedidoId, userId, motivo }){
+    const list = this.all();
+    const r = {
+      id: uid('REE'),
+      protocolo: uid('PROT'),
+      pedidoId, userId, motivo,
+      status: 'Em análise',
+      data: new Date().toISOString(),
+      historico: [{ data:new Date().toISOString(), status:'Solicitado', obs:motivo }]
+    };
+    list.push(r); store.set('reembolsos', list);
+    Pedidos.update(pedidoId, { statusPedido: 'Reembolso solicitado' }, { status:'Reembolso solicitado', obs:'Cliente abriu solicitação.' });
+    return r;
+  },
+  update(id, changes){
+    const list = this.all();
+    const idx = list.findIndex(r => r.id === id);
+    if (idx < 0) return null;
+    list[idx] = {...list[idx], ...changes};
+    list[idx].historico.push({ data:new Date().toISOString(), status:changes.status, obs:changes.obs||'' });
+    store.set('reembolsos', list);
+    if (changes.status === 'Aprovado') Pedidos.update(list[idx].pedidoId, { statusPedido: 'Reembolsado', statusPagamento: 'Reembolsado' }, { status:'Reembolsado', obs:'Reembolso concluído.' });
+    if (changes.status === 'Recusado') Pedidos.update(list[idx].pedidoId, { statusPedido: 'Concluído' }, { status:'Reembolso recusado', obs:changes.obs||'' });
+    return list[idx];
+  }
+};
+
+// ---------- TICKETS ----------
+const Tickets = {
+  all(){ return store.get('tickets', []); },
+  byUser(userId){ return this.all().filter(t => t.userId === userId); },
+  byId(id){ return this.all().find(t => t.id === id); },
+  create({ userId, assunto, mensagem }){
+    const list = this.all();
+    const t = {
+      id: uid('TCK'),
+      protocolo: uid('PRT'),
+      userId, assunto,
+      status: 'Aberto',
+      criadoEm: new Date().toISOString(),
+      mensagens: [{ autor:'cliente', texto:mensagem, data:new Date().toISOString() }]
+    };
+    list.push(t); store.set('tickets', list);
+    return t;
+  },
+  reply(id, autor, texto){
+    const list = this.all();
+    const idx = list.findIndex(t => t.id === id);
+    if (idx < 0) return null;
+    list[idx].mensagens.push({ autor, texto, data:new Date().toISOString() });
+    if (autor === 'admin') list[idx].status = 'Respondido';
+    store.set('tickets', list);
+    return list[idx];
+  },
+  update(id, changes){
+    const list = this.all();
+    const idx = list.findIndex(t => t.id === id);
+    if (idx < 0) return null;
+    list[idx] = {...list[idx], ...changes};
+    store.set('tickets', list);
+    return list[idx];
+  }
+};
+
+// ============================================================
+// VIEWS (SPA)
+// ============================================================
+
+let usuarioAtual = Auth.user();
+
+// ---------- HOME ----------
+function viewHome(){
+  return `
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <span class="badge">🔒 Plataforma segura · Ambiente de teste</span>
+      <h1 class="hero-title">Tecnologia premium<br><span class="gradient-text">para demonstrações modernas</span></h1>
+      <p class="hero-sub">Catálogo interativo com limites simulados, checkout PIX dinâmico e painel completo. Ambiente controlado, sem valores reais.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" onclick="scrollTo_('catalogo')">Ver catálogo</button>
+        <button class="btn btn-ghost" onclick="scrollTo_('como-funciona')">Como funciona</button>
+      </div>
+      <div class="hero-stats">
+        <div><strong>11</strong><span>Produtos demo</span></div>
+        <div><strong>PIX</strong><span>Checkout dinâmico</span></div>
+        <div><strong>100%</strong><span>Responsivo</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="catalogo">
+    <div class="container">
+      <div class="section-head">
+        <span class="kicker">Catálogo</span>
+        <h2>Escolha um produto de demonstração</h2>
+        <p>Todos os itens são fictícios e servem apenas para testes do fluxo completo.</p>
+      </div>
+      <div class="catalog-grid">${PRODUTOS.map(renderCardProduto).join('')}</div>
+    </div>
+  </section>
+
+  <section class="section" id="como-funciona">
+    <div class="container">
+      <div class="section-head">
+        <span class="kicker">Fluxo</span>
+        <h2>Como funciona</h2>
+        <p>Um passo a passo simples do processo de demonstração.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="step-num">01</div><h3>Crie sua conta</h3><p>Cadastro por e-mail ou Google (simulado). Sessão local para demonstração.</p></div>
+        <div class="step"><div class="step-num">02</div><h3>Escolha o produto</h3><p>Navegue pelo catálogo e selecione o item de teste desejado.</p></div>
+        <div class="step"><div class="step-num">03</div><h3>Pague com PIX</h3><p>QR Code de demonstração gerado dinamicamente no frontend.</p></div>
+        <div class="step"><div class="step-num">04</div><h3>Acompanhe no painel</h3><p>Status do pedido, suporte e reembolsos em um só lugar.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="suporte">
+    <div class="container">
+      <div class="section-head">
+        <span class="kicker">Suporte</span>
+        <h2>Estamos por aqui</h2>
+        <p>Central de ajuda, tickets e FAQ para toda a experiência de teste.</p>
+      </div>
+      <div class="support-grid">
+        <div class="support-card" onclick="go('dashboard','tickets')">
+          <div class="icon">💬</div><h3>Abrir ticket</h3>
+          <p>Crie um protocolo e acompanhe as respostas.</p>
+        </div>
+        <div class="support-card" onclick="scrollTo_('faq')">
+          <div class="icon">❓</div><h3>FAQ</h3>
+          <p>Perguntas frequentes sobre o ambiente de teste.</p>
+        </div>
+        <div class="support-card" onclick="go('dashboard','reembolso')">
+          <div class="icon">↩️</div><h3>Reembolso</h3>
+          <p>Solicite e acompanhe o status pelo painel.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="section-head">
+        <span class="kicker">FAQ</span>
+        <h2>Perguntas frequentes</h2>
+      </div>
+      <div class="steps">
+        <div class="step"><h3>Isso é real?</h3><p>Não. Todos os produtos e valores são fictícios, apenas para demonstração técnica.</p></div>
+        <div class="step"><h3>O PIX cobra de verdade?</h3><p>Não. Nesta demo, o QR Code é gerado localmente apenas para ilustrar o fluxo.</p></div>
+        <div class="step"><h3>Meus dados são salvos?</h3><p>Nesta versão de teste, os dados ficam no <em>localStorage</em> do seu navegador.</p></div>
+        <div class="step"><h3>Como virar produção?</h3><p>É necessário backend (Node/Postgres) + gateway PIX real + OAuth + HTTPS + LGPD.</p></div>
+      </div>
+    </div>
+  </section>`;
+}
+
+function renderCardProduto(p){
+  return `
+  <article class="product-card">
+    <span class="tag-demo">FICTÍCIO</span>
+    <h3 class="product-name">${p.nome}</h3>
+    <p class="product-desc">Item de demonstração para testes de fluxo completo. Não representa oferta real.</p>
+    <p class="product-status">
+      <span class="status-dot ${p.disponivel?'status-on':'status-off'}"></span>
+      ${p.disponivel?'Disponível para teste':'Indisponível'}
+    </p>
+    <div class="product-limits">
+      <div><small>Limite simulado</small><strong>${fmtBRL(p.limite)}</strong></div>
+      <div><small>Valor do produto</small><strong class="price">${fmtBRL(p.preco)}</strong></div>
+    </div>
+    <div class="product-actions">
+      <button class="btn btn-ghost" onclick="go('produto','${p.id}')">Detalhes</button>
+      <button class="btn btn-primary" onclick="comprar('${p.id}')">Comprar</button>
+    </div>
+  </article>`;
+}
+
+// ---------- PRODUTO DETALHE ----------
+function viewProduto(id){
+  const p = PRODUTOS.find(x => x.id === id);
+  if (!p) return `<div class="container section"><div class="warn-box">Produto não encontrado.</div></div>`;
+  return `
+  <div class="prod-detail">
+    <div class="prod-hero">
+      <span class="tag-demo" style="position:static;display:inline-block;margin-bottom:14px">FICTÍCIO</span>
+      <h1>${p.nome}</h1>
+      <p class="sub">Produto de demonstração — ambiente de teste. Não representa crédito real.</p>
+      <div class="product-limits" style="border-top:none;border-bottom:1px solid var(--border);padding-top:0">
+        <div><small>Limite simulado</small><strong>${fmtBRL(p.limite)}</strong></div>
+        <div><small>Valor do produto</small><strong class="price">${fmtBRL(p.preco)}</strong></div>
+      </div>
+      <ul>
+        <li>Item 100% fictício para testes de interface</li>
+        <li>Fluxo completo: catálogo → checkout → painel</li>
+        <li>Pagamento PIX simulado (sem cobrança real)</li>
+        <li>Suporte a reembolso e tickets nesta demo</li>
+      </ul>
+      <button class="btn btn-primary btn-block mt-2" onclick="comprar('${p.id}')">Comprar agora — ${fmtBRL(p.preco)}</button>
+    </div>
+    <div class="box">
+      <h3>Como funciona o fluxo</h3>
+      <p class="text-dim" style="font-size:14px">
+        Ao comprar, você entra no <strong>checkout de demonstração</strong>, onde é gerado um PIX
+        fictício com QR Code e código copia-e-cola. O status é atualizado manualmente para fins de teste.
+      </p>
+      <div class="warn-box mt-3">
+        ⚠️ <strong>Importante:</strong> este é um ambiente fictício. Nenhuma cobrança é realizada.
+      </div>
+      <button class="btn btn-ghost btn-block" onclick="go('home')">← Voltar ao catálogo</button>
+    </div>
+  </div>`;
+}
+
+// ---------- LOGIN / CADASTRO ----------
+function viewLogin(tab='entrar'){
+  return `
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <h2 id="authTitle">${tab==='cadastro'?'Criar conta':'Entrar'}</h2>
+      <p class="sub">Acesso ao ambiente de demonstração @dz_xs7.</p>
+
+      <div class="tabs">
+        <button class="${tab==='entrar'?'active':''}" onclick="go('login','entrar')">Entrar</button>
+        <button class="${tab==='cadastro'?'active':''}" onclick="go('login','cadastro')">Cadastrar</button>
+      </div>
+
+      <div id="authMsg" class="msg"></div>
+
+      <form onsubmit="return submitAuth(event,'${tab}')">
+        ${tab==='cadastro' ? `
+        <div class="field"><label>Nome</label><input id="inNome" type="text" placeholder="Seu nome" autocomplete="name" /></div>` : ''}
+        <div class="field"><label>E-mail</label><input id="inEmail" type="email" placeholder="voce@exemplo.com" autocomplete="email" required /></div>
+        <div class="field"><label>Senha</label><input id="inSenha" type="password" placeholder="Mínimo 6 caracteres" autocomplete="${tab==='cadastro'?'new-password':'current-password'}" required /></div>
+        ${tab==='entrar' ? `<div style="text-align:right;margin-bottom:14px"><a href="#" onclick="recuperarSenha();return false" style="font-size:13px;color:var(--primary-glow)">Esqueci a senha</a></div>`:''}
+        <button class="btn btn-primary btn-block" type="submit">${tab==='cadastro'?'Criar conta':'Entrar'}</button>
+      </form>
+
+      <div class="divider">OU</div>
+
+      <button class="btn-google" onclick="entrarGoogle()">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.6 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.1 29.6 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.2-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 18.9 12 24 12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.1 29.6 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.4 0 10.3-2 14-5.4l-6.5-5.5C29.4 34.7 26.8 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.4 4.3-4.4 5.6l6.5 5.5C41.4 35.6 44 30.2 44 24c0-1.2-.1-2.3-.4-3.5z"/></svg>
+        Continuar com Google
+      </button>
+
+      <p class="text-dim mt-3" style="font-size:12px;text-align:center">
+        🔒 Em produção, a autenticação é feita no backend com hash de senha (bcrypt/argon2), OAuth via Google Identity Services e sessões httpOnly seguras.
+      </p>
+    </div>
+  </div>`;
+}
+
+function submitAuth(e, tab){
+  e.preventDefault();
+  const msg = $('#authMsg');
+  msg.className = 'msg';
+  try{
+    if (tab === 'cadastro'){
+      const nome = $('#inNome').value.trim();
+      const email = $('#inEmail').value.trim();
+      const senha = $('#inSenha').value;
+      usuarioAtual = Auth.register({nome, email, senha});
+      toast('Conta criada (demo)!', 'ok');
+    } else {
+      const email = $('#inEmail').value.trim();
+      const senha = $('#inSenha').value;
+      usuarioAtual = Auth.login({email, senha});
+      toast('Bem-vindo, ' + usuarioAtual.nome, 'ok');
+    }
+    refreshNav();
+    go('dashboard');
+  }catch(err){
+    msg.className = 'msg error';
+    msg.textContent = err.message;
+  }
+  return false;
+}
+
+function entrarGoogle(){
+  usuarioAtual = Auth.loginGoogle();
+  refreshNav();
+  toast('Login Google simulado (demo)', 'ok');
+  go('dashboard');
+}
+
+function recuperarSenha(){
+  const msg = $('#authMsg');
+  msg.className = 'msg info';
+  msg.textContent = 'Em produção, um e-mail com link seguro seria enviado pelo backend. Esta é uma simulação.';
+}
+
+function logout(){
+  Auth.logout();
+  usuarioAtual = null;
+  refreshNav();
+  toast('Sessão encerrada.', 'ok');
+  go('home');
+}
+
+// ---------- CHECKOUT ----------
+function comprar(produtoId){
+  if (!Auth.isLogged()){
+    toast('Faça login para continuar.', 'err');
+    go('login');
+    return;
+  }
+  const p = PRODUTOS.find(x => x.id === produtoId);
+  if (!p || !p.disponivel){ toast('Produto indisponível.', 'err'); return; }
+  go('checkout', produtoId);
+}
+
+let pedidoAtualCheckout = null;
+
+function viewCheckout(produtoId){
+  const p = PRODUTOS.find(x => x.id === produtoId);
+  if (!p) return `<div class="container section"><div class="warn-box">Produto não encontrado.</div></div>`;
+
+  // Cria pedido se ainda não existir
+  if (!pedidoAtualCheckout || pedidoAtualCheckout.produtoId !== p.id){
+    pedidoAtualCheckout = Pedidos.create({
+      userId: usuarioAtual.id,
+      produto: p,
+      dadosCliente: { nome: usuarioAtual.nome, email: usuarioAtual.email }
+    });
+  }
+
+  const ped = pedidoAtualCheckout;
+
+  return `
+  <div class="checkout-wrap">
+    <h1 style="font-family:var(--font-display);font-size:28px">Finalizar pedido de teste</h1>
+    <p class="text-dim mt-1">Revise as informações e pague com PIX (demonstração).</p>
+
+    <div class="checkout-grid">
+      <div class="box">
+        <h3>Resumo do pedido</h3>
+        <div class="order-line"><span>Produto</span><strong>${p.nome}</strong></div>
+        <div class="order-line"><span>Limite simulado</span><strong>${fmtBRL(p.limite)}</strong></div>
+        <div class="order-line"><span>Número do pedido</span><strong>${ped.id}</strong></div>
+        <div class="order-line"><span>Cliente</span><strong>${usuarioAtual.nome}</strong></div>
+        <div class="order-line"><span>Data</span><strong>${new Date(ped.data).toLocaleString('pt-BR')}</strong></div>
+        <div class="order-line"><span>Total</span><strong class="total-line">${fmtBRL(p.preco)}</strong></div>
+
+        <div class="warn-box mt-3">
+          ⚠️ Pagamento <strong>PIX simulado</strong>. Nenhum valor real é cobrado neste ambiente de demonstração.
+        </div>
+      </div>
+
+      <div class="box">
+        <div class="pix-logo">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-label="PIX">
+            <path fill="#32BCAD" d="M42 20.6l-6.2-6.2a3 3 0 0 0-4.2 0L24 22l-7.6-7.6a3 3 0 0 0-4.2 0L6 20.6a3 3 0 0 0 0 4.2l6.2 6.2a3 3 0 0 0 4.2 0L24 23.4l7.6 7.6a3 3 0 0 0 4.2 0l6.2-6.2a3 3 0 0 0 0-4.2z"/>
+            <path fill="#4E9EE0" d="M24 45.6l-6.2-6.2a3 3 0 0 1 0-4.2L24 29l6.2 6.2a3 3 0 0 1 0 4.2z"/>
+          </svg>
+          <strong>Pagamento via PIX</strong>
+        </div>
+
+        <div class="qr-wrap">
+          <div class="qrcode-box" id="qrBox">
+            <canvas id="qrCanvas" width="220" height="220"></canvas>
+          </div>
+        </div>
+
+        <p class="text-dim center" style="font-size:13px;margin-top:6px">
+          Escaneie o QR Code (ilustrativo) ou use o código abaixo.
+        </p>
+
+        <div class="pix-code" id="pixCode">${ped.pix.copiaECola}</div>
+
+        <button class="btn btn-accent btn-block" onclick="copiarPix()">📋 Copiar código PIX</button>
+
+        <div class="payment-status" id="payStatus">
+          <span class="pulse-dot"></span>
+          <span>Aguardando confirmação do pagamento (simulado)…</span>
+        </div>
+
+        <p class="step-hint">
+          1. Abra o app do seu banco (ou use o QR de teste).<br>
+          2. Pague o valor de <strong>${fmtBRL(p.preco)}</strong>.<br>
+          3. O status será atualizado automaticamente.
+        </p>
+
+        <button class="btn btn-ghost btn-block mt-2" onclick="simularPagamento()">🔧 Simular pagamento (demo)</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function copiarPix(){
+  const code = $('#pixCode')?.textContent?.trim() || '';
+  navigator.clipboard.writeText(code).then(
+    () => toast('Código PIX copiado!', 'ok'),
+    () => toast('Não foi possível copiar.', 'err')
+  );
+}
+
+function simularPagamento(){
+  if (!pedidoAtualCheckout) return;
+  Pedidos.update(pedidoAtualCheckout.id, {
+    statusPagamento:'Pagamento confirmado',
+    statusPedido:'Em processamento'
+  }, { status:'Pagamento confirmado', obs:'Simulação de pagamento confirmado (demo).' });
+
+  const el = $('#payStatus');
+  if (el){
+    el.classList.add('confirmed');
+    el.innerHTML = '<span class="pulse-dot"></span><span>✅ Pagamento confirmado (simulado) — pedido em processamento.</span>';
+  }
+  toast('Pagamento confirmado (demo)!', 'ok');
+  setTimeout(() => go('dashboard','pedidos'), 1400);
+}
+
+// Desenho simples de QR "fake" — apenas ilustrativo
+function desenharQRDemo(){
+  const canvas = $('#qrCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const size = canvas.width;
+  const cells = 25;
+  const cell = size / cells;
+  ctx.fillStyle = '#fff'; ctx.fillRect(0,0,size,size);
+  ctx.fillStyle = '#0a0e1a';
+  // Pseudo-random determinístico
+  let seed = (pedidoAtualCheckout?.id || 'DEMO').split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+  const rand = () => { seed = (seed*9301+49297)%233280; return seed/233280; };
+  for(let y=0;y<cells;y++){
+    for(let x=0;x<cells;x++){
+      if (rand() > .55) ctx.fillRect(x*cell, y*cell, cell, cell);
+    }
+  }
+  // Marcadores de canto
+  const drawMarker = (mx,my) => {
+    ctx.fillStyle = '#0a0e1a';
+    ctx.fillRect(mx*cell, my*cell, cell*7, cell*7);
+    ctx.fillStyle = '#fff';
+    ctx.fillRect((mx+1)*cell, (my+1)*cell, cell*5, cell*5);
+    ctx.fillStyle = '#0a0e1a';
+    ctx.fillRect((mx+2)*cell, (my+2)*cell, cell*3, cell*3);
+  };
+  drawMarker(0,0); drawMarker(cells-7,0); drawMarker(0,cells-7);
+  // Texto demo
+  ctx.fillStyle = '#4f7cff';
+  ctx.font = 'bold 11px sans-serif';
+  ctx.fillText('DEMO', size-46, size-8);
+}
+
+// ---------- DASHBOARD ----------
+function viewDashboard(tab='perfil'){
+  if (!Auth.isLogged()){ go('login'); return ''; }
+  const u = usuarioAtual;
+  const pedidos = Pedidos.byUser(u.id);
+  const reembolsos = Reembolsos.byUser(u.id);
+  const tickets = Tickets.byUser(u.id);
+
+  const tabs = [
+    ['perfil','Perfil'],
+    ['pedidos','Pedidos'],
+    ['pagamentos','Pagamentos'],
+    ['reembolso','Reembolsos'],
+    ['tickets','Suporte']
+  ];
+
+  return `
+  <div class="dash-wrap">
+    <div class="dash-head">
+      <div>
+        <h1>Olá, ${u.nome.split(' ')[0]} 👋</h1>
+        <p>Área do cliente — ambiente de demonstração.</p>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="logout()">Sair</button>
+    </div>
+
+    <div class="dash-tabs">
+      ${tabs.map(([k,l]) => `<button class="${tab===k?'active':''}" onclick="go('dashboard','${k}')">${l}</button>`).join('')}
+    </div>
+
+    ${tab==='perfil' ? viewPerfil(u) : ''}
+    ${tab==='pedidos' ? viewPedidos(pedidos) : ''}
+    ${tab==='pagamentos' ? viewPagamentos(pedidos) : ''}
+    ${tab==='reembolso' ? viewReembolsos(reembolsos, pedidos) : ''}
+    ${tab==='tickets' ? viewTickets(tickets) : ''}
+  </div>`;
+}
+
+function viewPerfil(u){
+  return `
+  <div class="box">
+    <h3>Meus dados</h3>
+    <div class="order-line"><span>Nome</span><strong>${u.nome}</strong></div>
+    <div class="order-line"><span>E-mail</span><strong>${u.email}</strong></div>
+    <div class="order-line"><span>Perfil</span><strong>${u.role}</strong></div>
+    <div class="order-line"><span>Conta criada em</span><strong>${new Date(u.criadoEm).toLocaleString('pt-BR')}</strong></div>
+    <div class="warn-box mt-3">🔒 Em produção: dados criptografados em repouso, sessões httpOnly, CSRF e LGPD.</div>
+  </div>`;
+}
+
+function viewPedidos(pedidos){
+  if (!pedidos.length){
+    return `<div class="box center"><p class="text-dim">Nenhum pedido ainda.</p>
+      <button class="btn btn-primary mt-2" onclick="go('home');scrollTo_('catalogo')">Ver catálogo</button></div>`;
+  }
+  return `
+  <table class="data-table">
+    <thead><tr><th>Pedido</th><th>Produto</th><th>Valor</th><th>Status</th><th>Data</th></tr></thead>
+    <tbody>
+      ${pedidos.map(p => `
+        <tr>
+          <td><strong>${p.id}</strong></td>
+          <td>${p.produtoNome}</td>
+          <td>${fmtBRL(p.valor)}</td>
+          <td>${badgeStatus(p.statusPedido)}</td>
+          <td>${new Date(p.data).toLocaleDateString('pt-BR')}</td>
+        </tr>`).join('')}
+    </tbody>
+  </table>`;
+}
+
+function viewPagamentos(pedidos){
+  if (!pedidos.length) return `<div class="box center"><p class="text-dim">Sem pagamentos registrados.</p></div>`;
+  return `
+  <table class="data-table">
+    <thead><tr><th>Pedido</th><th>Método</th><th>Valor</th><th>Status</th><th>Data</th></tr></thead>
+    <tbody>
+      ${pedidos.map(p => `
+        <tr>
+          <td>${p.id}</td>
+          <td>PIX (demo)</td>
+          <td>${fmtBRL(p.valor)}</td>
+          <td>${badgeStatus(p.statusPagamento)}</td>
+          <td>${new Date(p.data).toLocaleDateString('pt-BR')}</td>
+        </tr>`).join('')}
+    </tbody>
+  </table>`;
+}
+
+function viewReembolsos(reembolsos, pedidos){
+  return `
+  <div class="box mb-3">
+    <h3>Solicitar reembolso</h3>
+    ${pedidos.length ? `
+    <form onsubmit="return solicitarReembolso(event)">
+      <div class="field">
+        <label>Pedido</label>
+        <select id="selPedido" style="width:100%;padding:12px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:10px;color:var(--text)">
+          ${pedidos.map(p => `<option value="${p.id}">${p.id} — ${p.produtoNome} (${fmtBRL(p.valor)})</option>`).join('')}
+        </select>
+      </div>
+      <div class="field">
+        <label>Motivo</label>
+        <textarea id="txtMotivo" rows="3" style="width:100%;padding:12px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:10px;color:var(--text);resize:vertical" placeholder="Descreva o motivo da solicitação"></textarea>
+      </div>
+      <button class="btn btn-primary" type="submit">Enviar solicitação</button>
+    </form>` : `<p class="text-dim">Você precisa ter um pedido para solicitar reembolso.</p>`}
+  </div>
+
+  <div class="box">
+    <h3>Histórico de reembolsos</h3>
+    ${reembolsos.length ? `
+    <table class="data-table">
+      <thead><tr><th>Protocolo</th><th>Pedido</th><th>Status</th><th>Data</th></tr></thead>
+      <tbody>
+        ${reembolsos.map(r => `
+          <tr><td>${r.protocolo}</td><td>${r.pedidoId}</td><td>${badgeStatus(r.status)}</td>
+          <td>${new Date(r.data).toLocaleDateString('pt-BR')}</td></tr>`).join('')}
+      </tbody>
+    </table>` : `<p class="text-dim">Nenhuma solicitação registrada.</p>`}
+  </div>
+
+  <div class="box mt-3">
+    <h3>Política de reembolso (demonstração)</h3>
+    <p class="text-dim" style="font-size:14px">
+      Neste ambiente fictício, solicitações são analisadas pelo administrador do sistema.
+      Em produção, a política deve seguir o Código de Defesa do Consumidor (CDC), especialmente
+      o <strong>art. 49</strong> (direito de arrependimento em 7 dias para compras online),
+      além das regras do gateway de pagamento.
+    </p>
+  </div>`;
+}
+
+function solicitarReembolso(e){
+  e.preventDefault();
+  const pedidoId = $('#selPedido').value;
+  const motivo = $('#txtMotivo').value.trim();
+  if (!motivo){ toast('Informe o motivo.', 'err'); return false; }
+  const r = Reembolsos.create({ pedidoId, userId: usuarioAtual.id, motivo });
+  toast('Reembolso solicitado. Protocolo: ' + r.protocolo, 'ok');
+  go('dashboard','reembolso');
+  return false;
+}
+
+function viewTickets(tickets){
+  return `
+  <div class="box mb-3">
+    <h3>Abrir ticket de suporte</h3>
+    <form onsubmit="return abrirTicket(event)">
+      <div class="field"><label>Assunto</label>
+        <input id="tkAssunto" type="text" placeholder="Ex: Dúvida sobre pedido" required /></div>
+      <div class="field"><label>Mensagem</label>
+        <textarea id="tkMsg" rows="4" style="width:100%;padding:12px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:10px;color:var(--text);resize:vertical" placeholder="Descreva sua dúvida" required></textarea></div>
+      <button class="btn btn-primary" type="submit">Enviar ticket</button>
+    </form>
+  </div>
+
+  <div class="box">
+    <h3>Meus tickets</h3>
+    ${tickets.length ? tickets.map(t => `
+      <div style="border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <strong>${t.assunto}</strong>
+          ${badgeStatus(t.status)}
+        </div>
+        <small class="text-dim">Protocolo: ${t.protocolo} · ${new Date(t.criadoEm).toLocaleString('pt-BR')}</small>
+        <div style="margin-top:10px">
+          ${t.mensagens.map(m => `
+            <div style="background:var(--bg-2);border-radius:10px;padding:10px;margin-bottom:6px;font-size:13.5px">
+              <strong style="color:${m.autor==='admin'?'var(--accent)':'var(--primary-glow)'}">${m.autor==='admin'?'Suporte':'Você'}:</strong>
+              ${m.texto}
+            </div>`).join('')}
+        </div>
+      </div>`).join('') : `<p class="text-dim">Nenhum ticket aberto.</p>`}
+  </div>`;
+}
+
+function abrirTicket(e){
+  e.preventDefault();
+  const assunto = $('#tkAssunto').value.trim();
+  const mensagem = $('#tkMsg').value.trim();
+  const t = Tickets.create({ userId: usuarioAtual.id, assunto, mensagem });
+  toast('Ticket criado. Protocolo: ' + t.protocolo, 'ok');
+  go('dashboard','tickets');
+  return false;
+}
+
+function badgeStatus(s){
+  const map = {
+    'Aguardando pagamento':'bs-wait',
+    'Pagamento confirmado':'bs-ok',
+    'Em processamento':'bs-proc',
+    'Concluído':'bs-ok',
+    'Cancelado':'bs-cancel',
+    'Reembolso solicitado':'bs-ref',
+    'Reembolsado':'bs-ref',
+    'Em análise':'bs-wait',
+    'Aprovado':'bs-ok',
+    'Recusado':'bs-cancel',
+    'Aberto':'bs-proc',
+    'Respondido':'bs-ok',
+    'Fechado':'bs-cancel'
+  };
+  return `<span class="badge-status ${map[s]||'bs-wait'}">${s}</span>`;
+}
+
+// ---------- ADMIN ----------
+function viewAdmin(tab='dashboard'){
+  if (!Auth.isAdmin()){ go('login'); return ''; }
+  const pedidos = Pedidos.all();
+  const reembolsos = Reembolsos.all();
+  const tickets = Tickets.all();
+  const clientes = store.get('users', []).filter(u => u.role==='cliente');
+
+  const totalVendas = pedidos
+    .filter(p => p.statusPagamento === 'Pagamento confirmado')
+    .reduce((s,p) => s + p.valor, 0);
+
+  const tabs = [
+    ['dashboard','Dashboard'],
+    ['pedidos','Pedidos'],
+    ['reembolsos','Reembolsos'],
+    ['tickets','Tickets'],
+    ['produtos','Produtos'],
+    ['clientes','Clientes']
+  ];
+
+  return `
+  <div class="dash-wrap">
+    <div class="dash-head">
+      <div>
+        <h1>Painel administrativo</h1>
+        <p>Gestão completa do ambiente de demonstração.</p>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="logout()">Sair</button>
+    </div>
+
+    <div class="dash-tabs">
+      ${tabs.map(([k,l]) => `<button class="${tab===k?'active':''}" onclick="go('admin','${k}')">${l}</button>`).join('')}
+    </div>
+
+    ${tab==='dashboard' ? `
+      <div class="stat-grid">
+        <div class="stat"><small>Pedidos totais</small><strong>${pedidos.length}</strong></div>
+        <div class="stat"><small>Vendas confirmadas</small><strong>${fmtBRL(totalVendas)}</strong></div>
+        <div class="stat"><small>Reembolsos</small><strong>${reembolsos.length}</strong></div>
+        <div class="stat"><small>Tickets abertos</small><strong>${tickets.filter(t=>t.status!=='Fechado').length}</strong></div>
+        <div class="stat"><small>Clientes</small><strong>${clientes.length}</strong></div>
+        <div class="stat"><small>Produtos ativos</small><strong>${PRODUTOS.filter(p=>p.disponivel).length}</strong></div>
+      </div>
+      <div class="box">
+        <h3>Últimos pedidos</h3>
+        ${pedidos.length ? `
+        <table class="data-table">
+          <thead><tr><th>ID</th><th>Cliente</th><th>Produto</th><th>Valor</th><th>Status</th></tr></thead>
+          <tbody>
+            ${pedidos.slice(-6).reverse().map(p => `
+              <tr>
+                <td>${p.id}</td>
+                <td>${p.cliente?.nome || '—'}</td>
+                <td>${p.produtoNome}</td>
+                <td>${fmtBRL(p.valor)}</td>
+                <td>${badgeStatus(p.statusPedido)}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>` : `<p class="text-dim">Sem pedidos ainda.</p>`}
+      </div>
+    ` : ''}
+
+    ${tab==='pedidos' ? `
+      <div class="box">
+        <h3>Gerenciar pedidos</h3>
+        ${pedidos.length ? `
+        <table class="data-table">
+          <thead><tr><th>ID</th><th>Cliente</th><th>Produto</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead>
+          <tbody>
+            ${pedidos.map(p => `
+              <tr>
+                <td>${p.id}</td>
+                <td>${p.cliente?.nome || '—'}</td>
+                <td>${p.produtoNome}</td>
+                <td>${fmtBRL(p.valor)}</td>
+                <td>${badgeStatus(p.statusPedido)}</td>
+                <td>
+                  <select onchange="adminMudarStatus('${p.id}', this.value)" style="padding:6px;background:var(--bg-2);color:var(--text);border:1px solid var(--border);border-radius:6px;font-size:12px">
+                    <option value="">Alterar status…</option>
+                    <option>Aguardando pagamento</option>
+                    <option>Pagamento confirmado</option>
+                    <option>Em processamento</option>
+                    <option>Concluído</option>
+                    <option>Cancelado</option>
+                    <option>Reembolsado</option>
+                  </select>
+                </td>
+              </tr>`).join('')}
+          </tbody>
+        </table>` : `<p class="text-dim">Sem pedidos ainda.</p>`}
+      </div>
+    ` : ''}
+
+    ${tab==='reembolsos' ? `
+      <div class="box">
+        <h3>Solicitações de reembolso</h3>
+        ${reembolsos.length ? `
+        <table class="data-table">
+          <thead><tr><th>Protocolo</th><th>Pedido</th><th>Motivo</th><th>Status</th><th>Ações</th></tr></thead>
+          <tbody>
+            ${reembolsos.map(r => `
+              <tr>
+                <td>${r.protocolo}</td>
+                <td>${r.pedidoId}</td>
+                <td style="max-width:260px">${r.motivo}</td>
+                <td>${badgeStatus(r.status)}</td>
+                <td>
+                  ${r.status === 'Em análise' ? `
+                    <button class="btn btn-accent btn-sm" onclick="adminReembolso('${r.id}','Aprovado')">Aprovar</button>
+                    <button class="btn btn-danger btn-sm" onclick="adminReembolso('${r.id}','Recusado')">Recusar</button>
+                  ` : '—'}
+                </td>
+              </tr>`).join('')}
+          </tbody>
+        </table>` : `<p class="text-dim">Sem solicitações.</p>`}
+      </div>
+    ` : ''}
+
+    ${tab==='tickets' ? `
+      <div class="box">
+        <h3>Tickets de suporte</h3>
+        ${tickets.length ? tickets.map(t => `
+          <div style="border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px">
+            <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
+              <strong>${t.assunto}</strong>
+              ${badgeStatus(t.status)}
+            </div>
+            <small class="text-dim">Protocolo: ${t.protocolo}</small>
+            <div style="margin-top:10px">
+              ${t.mensagens.map(m => `
+                <div style="background:var(--bg-2);border-radius:10px;padding:10px;margin-bottom:6px;font-size:13.5px">
+                  <strong style="color:${m.autor==='admin'?'var(--accent)':'var(--primary-glow)'}">${m.autor==='admin'?'Suporte':'Cliente'}:</strong>
+                  ${m.texto}
+                </div>`).join('')}
+            </div>
+            <div class="field mt-2">
+              <textarea id="tkr-${t.id}" rows="2" placeholder="Responder ao cliente…" style="width:100%;padding:10px;background:var(--bg-2);border:1px solid var(--border);border-radius:10px;color:var(--text)"></textarea>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="adminResponder('${t.id}')">Responder</button>
+            <button class="btn btn-ghost btn-sm" onclick="adminFecharTicket('${t.id}')">Fechar</button>
+          </div>`).join('') : `<p class="text-dim">Sem tickets.</p>`}
+      </div>
+    ` : ''}
+
+    ${tab==='produtos' ? `
+      <div class="box">
+        <h3>Catálogo de produtos (demo)</h3>
+        <p class="text-dim mb-2" style="font-size:13.5px">Catálogo estático nesta versão. Em produção, salvo em banco.</p>
+        <table class="data-table">
+          <thead><tr><th>ID</th><th>Nome</th><th>Limite</th><th>Preço</th><th>Status</th></tr></thead>
+          <tbody>
+            ${PRODUTOS.map(p => `
+              <tr>
+                <td>${p.id}</td><td>${p.nome}</td>
+                <td>${fmtBRL(p.limite)}</td><td>${fmtBRL(p.preco)}</td>
+                <td>${p.disponivel ? badgeStatus('Pagamento confirmado') : badgeStatus('Cancelado')}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    ` : ''}
+
+    ${tab==='clientes' ? `
+      <div class="box">
+        <h3>Clientes cadastrados</h3>
+        ${clientes.length ? `
+        <table class="data-table">
+          <thead><tr><th>ID</th><th>Nome</th><th>E-mail</th><th>Desde</th></tr></thead>
+          <tbody>
+            ${clientes.map(c => `
+              <tr><td>${c.id}</td><td>${c.nome}</td><td>${c.email}</td>
+              <td>${new Date(c.criadoEm).toLocaleDateString('pt-BR')}</td></tr>`).join('')}
+          </tbody>
+        </table>` : `<p class="text-dim">Nenhum cliente cadastrado.</p>`}
+      </div>
+    ` : ''}
+  </div>`;
+}
+
+function adminMudarStatus(pedidoId, novo){
+  if (!novo) return;
+  Pedidos.update(pedidoId, { statusPedido: novo }, { status: novo, obs:'Alterado pelo admin.' });
+  toast('Status atualizado.', 'ok');
+  go('admin','pedidos');
+}
+function adminReembolso(id, status){
+  Reembolsos.update(id, { status, obs:'Decisão do administrador.' });
+  toast('Reembolso ' + status.toLowerCase() + '.', 'ok');
+  go('admin','reembolsos');
+}
+function adminResponder(ticketId){
+  const el = document.getElementById('tkr-' + ticketId);
+  const texto = el.value.trim();
+  if (!texto){ toast('Digite uma resposta.', 'err'); return; }
+  Tickets.reply(ticketId, 'admin', texto);
+  toast('Resposta enviada.', 'ok');
+  go('admin','tickets');
+}
+function adminFecharTicket(id){
+  Tickets.update(id, { status:'Fechado' });
+  toast('Ticket fechado.', 'ok');
+  go('admin','tickets');
+}
+
+// ============================================================
+// ROTEADOR SPA
+// ============================================================
+function go(view, param){
+  const app = $('#app');
+  if (!app) return;
+  window.scrollTo({top:0, behavior:'instant'});
+
+  switch(view){
+    case 'home': app.innerHTML = viewHome(); break;
+    case 'produto': app.innerHTML = viewProduto(param); break;
+    case 'login': app.innerHTML = viewLogin(param || 'entrar'); break;
+    case 'checkout':
+      app.innerHTML = viewCheckout(param);
+      requestAnimationFrame(desenharQRDemo);
+      break;
+    case 'dashboard': app.innerHTML = viewDashboard(param || 'perfil'); break;
+    case 'admin': app.innerHTML = viewAdmin(param || 'dashboard'); break;
+    default: app.innerHTML = viewHome();
+  }
+  $('#navLinks')?.classList.remove('open');
+  $('#menuToggle')?.classList.remove('open');
+  refreshNav();
+}
+
+function refreshNav(){
+  const logged = Auth.isLogged();
+  const admin = Auth.isAdmin();
+  $('#navLogin').classList.toggle('hidden', logged);
+  $('#navCta').classList.toggle('hidden', logged);
+  $('#navArea').classList.toggle('hidden', !logged);
+  $('#navAdmin').classList.toggle('hidden', !admin);
+  $('#navLogout').classList.toggle('hidden', !logged);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  $('#year').textContent = new Date().getFullYear();
+
+  const toggle = $('#menuToggle');
+  toggle?.addEventListener('click', () => {
+    toggle.classList.toggle('open');
+    $('#navLinks').classList.toggle('open');
+  });
+
+  // Sessão persistente
+  usuarioAtual = Auth.user();
+  refreshNav();
+
+  // Rota inicial
+  const hash = location.hash.replace('#','') || 'home';
+  go(hash);
+  if (hash === 'home') scrollTo_('catalogo');
+});
+
+window.addEventListener('hashchange', () => {
+  const h = location.hash.replace('#','') || 'home';
+  go(h);
+});
+
+// expõe handlers globais (onclick inline)
+window.go = go;
+window.scrollTo_ = scrollTo_;
+window.comprar = comprar;
+window.submitAuth = submitAuth;
+window.entrarGoogle = entrarGoogle;
+window.recuperarSenha = recuperarSenha;
+window.logout = logout;
+window.copiarPix = copiarPix;
+window.simularPagamento = simularPagamento;
+window.solicitarReembolso = solicitarReembolso;
+window.abrirTicket = abrirTicket;
+window.adminMudarStatus = adminMudarStatus;
+window.adminReembolso = adminReembolso;
+window.adminResponder = adminResponder;
+window.adminFecharTicket = adminFecharTicket;
+</script>
+
+</body>
+  </html>
